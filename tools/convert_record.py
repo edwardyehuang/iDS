@@ -5,7 +5,7 @@
 
 import os, sys
 
-rootpath = os.path.abspath(os.path.join(os.path.dirname( __file__ ), os.pardir, os.pardir))
+rootpath = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
 
 sys.path.insert(1, rootpath)
 
@@ -23,11 +23,11 @@ flags.DEFINE_multi_string("tfrecord_outputs", None, "outputs of tfrecord")
 
 flags.DEFINE_bool("compress", False, "Compress tfrecord")
 
-flags.DEFINE_float("size_split", 8e+9, "max size of each tfrecord file")
+flags.DEFINE_float("size_split", 8e9, "max size of each tfrecord file")
 
 
-def main (argv):
-    
+def main(argv):
+
     dataset_names = FLAGS.convert_datasets
     output_paths = FLAGS.tfrecord_outputs
 
@@ -39,11 +39,8 @@ def main (argv):
         output_dir = output_paths[i]
 
         dataset = dataset_name_to_dataset(name)
-        dataset.save_tf_record(output_dir, compress = FLAGS.compress, size_split = FLAGS.size_split)
-        
+        dataset.save_tf_record(output_dir, compress=FLAGS.compress, size_split=FLAGS.size_split)
+
 
 if __name__ == "__main__":
     app.run(main)
-
-
-

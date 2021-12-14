@@ -5,7 +5,7 @@
 
 import os, sys
 
-rootpath = os.path.abspath(os.path.join(os.path.dirname( __file__ ), os.pardir, os.pardir))
+rootpath = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
 
 sys.path.insert(1, rootpath)
 
@@ -27,8 +27,9 @@ flags.DEFINE_string("output_dir", None, "output dir path")
 flags.DEFINE_string("colormap", "voc2012", "colormap name")
 flags.DEFINE_integer("ignore_label", 255, "ignore label")
 
-def apply_colormap_to_dir (input_dir, output_dir = None, colormap = None):
-    
+
+def apply_colormap_to_dir(input_dir, output_dir=None, colormap=None):
+
     colormap = colormap.astype(np.uint8)
 
     counter = 0
@@ -49,15 +50,15 @@ def apply_colormap_to_dir (input_dir, output_dir = None, colormap = None):
         img = img.convert("P")
 
         img.putpalette(colormap)
-        img.save(output_path, format='PNG')
+        img.save(output_path, format="PNG")
 
         counter += 1
 
         tf.print("Processed {}".format(counter))
 
 
-def main (argv):
-    
+def main(argv):
+
     colormap_name = FLAGS.colormap
 
     colormap_name = colormap_name.lower()
@@ -72,11 +73,9 @@ def main (argv):
     if FLAGS.ignore_label == 0:
         colormap = colormap[1:]
 
-    apply_colormap_to_dir(FLAGS.input_dir, FLAGS.output_dir, colormap = colormap)
-
+    apply_colormap_to_dir(FLAGS.input_dir, FLAGS.output_dir, colormap=colormap)
 
 
 if __name__ == "__main__":
 
     app.run(main)
-        
