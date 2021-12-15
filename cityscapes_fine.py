@@ -23,17 +23,15 @@ from .dataset import Dataset
 
 class CityScapesFine(Dataset):
 
-    NUM_CLASSES = 19
-    IGNORE_LABEL = 255
-    VAL_IMAGE_COUNT = 500
-
-    RANDOM_BRIGHTNESS = True
-
     def __init__(self, dataset_dir):
 
         super(CityScapesFine, self).__init__(dataset_dir)
 
         self.__label_color_map = get_colormap()
+
+        self.ignore_label = 255
+        self.num_class = 19
+        self.val_image_count = 500
 
     def load_data_paths(self, dataset_dir):
 

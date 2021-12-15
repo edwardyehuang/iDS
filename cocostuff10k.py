@@ -25,15 +25,14 @@ from ids.voc2012 import get_colormap
 
 class Cocostuff10K(Dataset):
 
-    NUM_CLASSES = 171
-    IGNORE_LABEL = 255
-    VAL_IMAGE_COUNT = 1000
-
-    COMPRESS = True
-
     def __init__(self, dataset_dir):
 
-        super(Cocostuff10K, self).__init__(dataset_dir)
+        super().__init__(dataset_dir)
+
+        self.ignore_label = 255
+        self.num_class = 171
+        self.val_image_count = 1000
+        self.compress = True
 
     def load_data_paths(self, dataset_dir):
 

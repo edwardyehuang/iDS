@@ -13,61 +13,43 @@ from iseg.data_process.pipeline import StandardArgumentsPipeline
 
 
 class Dataset(object):
-
-    MEAN_PXIEL = [127.5, 127.5, 127.5]
-
-    NUM_CLASSES = 21
-
-    IGNORE_LABEL = 255
-
-    VAL_IMAGE_COUNT = 0
-
-    CROP_HEIGHT = 513
-
-    CROP_WIDTH = 513
-
-    EVAL_CROP_HEIGHT = None
-
-    EVAL_CROP_WIDTH = None
-
-    IGNORE_LABEL = 255
-
-    DEPRECATED_LABEL = []
-
-    MIN_RESIZE_VALUE = None
-
-    MAX_RESIZE_VALUE = None
-
-    RESIZE_FACTOR = None
-
-    PROB_OF_FLIP = 0.5
-
-    MIN_SCALE_FACTOR = 0.5
-
-    MAX_SCALE_FACTOR = 2.0
-
-    SCALE_FACTOR_STEP_SIZE = 0.25
-
-    RANDOM_BRIGHTNESS = True
-
-    PHOTO_METRIC_DISTORTION = (False,)
-
-    USE_TFRECORD = True
-
-    TRAINVAL = False
-
-    COMPRESS = False
-
-    SWAP_TRAINVAL = False
-
-    REVERSED_LABEL = False
-
+    
     @property
     def dataset_dir(self):
         return self.__dataset_dir
 
     def __init__(self, dataset_dir):
         self.__dataset_dir = dataset_dir
+
+        self.mean_pixel = [127.5, 127.5, 127.5]
+
+        self.ignore_label = 255
+        self.num_class = 21
+        self.val_image_count = 0
+
+        self.crop_height = 513
+        self.crop_width = 513
+
+        self.eval_crop_height = None
+        self.eval_crop_width = None
+
+        self.prob_of_flip = 0.5
+        self.min_scale_factor = 0.5
+        self.max_scale_factor = 2.0
+        self.scale_factor_step_size = 0.25
+
+        self.min_resize_value = None
+        self.max_resize_value = None
+
+        self.random_brightness = True
+        self.photo_metric_distortion = False
+
+        self.swap_trainval = False
+
+        self.compress = False
+        self.trainval = False
+
+        self.use_tfrecord = True
 
         self.__train_arugments_pipeline = None
         self.__val_arguments_pipeline = None
@@ -80,7 +62,7 @@ class Dataset(object):
         train_ds = None
         val_ds = None
 
-        if not self.USE_TFRECORD:
+        if not self.use_tfrecord:
             train_ds, val_ds = self.load_trainval_tensor_ds()
         else:
             if not isinstance(self.__dataset_dir, str):
@@ -89,12 +71,12 @@ class Dataset(object):
             train_ds = self.read_tf_record(True)
             val_ds = self.read_tf_record(False)
 
-        if self.SWAP_TRAINVAL:
+        if self.swap_trainval:
             tmp = train_ds
             train_ds = val_ds
             val_ds = tmp
 
-        if self.TRAINVAL:
+        if self.trainval:
             train_ds = train_ds.concatenate(val_ds)
 
         train_ds = self.process_tensor_ds(train_ds, True)
@@ -105,11 +87,11 @@ class Dataset(object):
     def read_tf_record(self, training=False):
         if training:
             return tfrecordutil.read_tesnor_ds_from_tfrecords_dir(
-                self._tfrecord_read_map_fn, self.__dataset_dir, ss.TRAIN, compress=self.COMPRESS
+                self._tfrecord_read_map_fn, self.__dataset_dir, ss.TRAIN, compress=self.compress
             )
         else:
             return tfrecordutil.read_tesnor_ds_from_tfrecords_dir(
-                self._tfrecord_read_map_fn, self.__dataset_dir, ss.VAL, compress=self.COMPRESS
+                self._tfrecord_read_map_fn, self.__dataset_dir, ss.VAL, compress=self.compress
             )
 
     def save_tf_record(self, output_dir, compress=False, size_split=8e9):
@@ -215,20 +197,20 @@ class Dataset(object):
 
         return StandardArgumentsPipeline(
             training=training,
-            mean_pixel=self.MEAN_PXIEL,
-            ignore_label=self.IGNORE_LABEL,
-            min_resize_value=self.MIN_RESIZE_VALUE,
-            max_resize_value=self.MAX_RESIZE_VALUE,
-            crop_height=self.CROP_HEIGHT,
-            crop_width=self.CROP_WIDTH,
-            eval_crop_height=self.EVAL_CROP_HEIGHT,
-            eval_crop_width=self.EVAL_CROP_WIDTH,
-            prob_of_flip=self.PROB_OF_FLIP,
-            min_scale_factor=self.MIN_SCALE_FACTOR,
-            max_scale_factor=self.MAX_SCALE_FACTOR,
-            scale_factor_step_size=self.SCALE_FACTOR_STEP_SIZE,
-            random_brightness=self.RANDOM_BRIGHTNESS,
-            photo_metric_distortions=self.PHOTO_METRIC_DISTORTION,
+            mean_pixel=self.mean_pixel,
+            ignore_label=self.ignore_label,
+            min_resize_value=self.min_resize_value,
+            max_resize_value=self.max_resize_value,
+            crop_height=self.crop_height,
+            crop_width=self.crop_width,
+            eval_crop_height=self.eval_crop_height,
+            eval_crop_width=self.eval_crop_width,
+            prob_of_flip=self.prob_of_flip,
+            min_scale_factor=self.min_scale_factor,
+            max_scale_factor=self.max_scale_factor,
+            scale_factor_step_size=self.scale_factor_step_size,
+            random_brightness=self.random_brightness,
+            photo_metric_distortions=self.photo_metric_distortion,
         )
 
     def _load_label_to_tensor(self, label_path):

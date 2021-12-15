@@ -17,20 +17,18 @@ SEGMENTATION_TRAIN_FILENAME = "images.txt"
 IMAGE_FILE_EXTENSION = ".jpg"
 LABEL_FILE_EXTENSION = ".png"
 
-IGNORE_LABEL = 255
-
 from .dataset import Dataset
 
 
 class CocoVOC(Dataset):
-
-    NUM_CLASSES = 21
-    IGNORE_LABEL = 255
-    COMPRESS = True
-
+    
     def __init__(self, dataset_dir):
 
         super(CocoVOC, self).__init__(dataset_dir)
+
+        self.ignore_label = 255
+        self.num_class = 21
+        self.compress = True
 
     def load_data_paths(self, dataset_dir):
 

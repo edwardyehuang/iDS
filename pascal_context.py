@@ -23,17 +23,17 @@ from .dataset import Dataset
 
 class PascalContext(Dataset):
 
-    NUM_CLASSES = 59
-    IGNORE_LABEL = 0
-    VAL_IMAGE_COUNT = 5105
-
     def __init__(self, dataset_dir, ignore_label_to_background=False):
 
         super().__init__(dataset_dir)
 
+        self.ignore_label = 0
+        self.num_class = 59
+        self.val_image_count = 5105
+
         if ignore_label_to_background:
-            self.NUM_CLASSES = 60
-            self.IGNORE_LABEL = 255
+            self.num_class = 60
+            self.ignore_label = 255
 
         self.__label_color_map = self.create_label_colormap()
 

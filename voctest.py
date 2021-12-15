@@ -25,12 +25,12 @@ from .dataset import Dataset
 
 class VOCTest(Dataset):
 
-    NUM_CLASSES = 21
-    IGNORE_LABEL = 255
-
     def __init__(self, dataset_dir):
 
-        super(VOCTest, self).__init__(dataset_dir)
+        super().__init__(dataset_dir)
+
+        self.ignore_label = 255
+        self.num_class = 21
 
     def load_data_paths(self, dataset_dir):
 
