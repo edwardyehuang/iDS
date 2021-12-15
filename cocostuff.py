@@ -22,7 +22,6 @@ from .dataset import Dataset
 
 
 class Cocostuff(Dataset):
-
     def __init__(self, dataset_dir):
 
         super().__init__(dataset_dir)

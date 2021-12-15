@@ -24,7 +24,6 @@ from ids.voc2012 import get_colormap
 
 
 class Cocostuff10K(Dataset):
-
     def __init__(self, dataset_dir):
 
         super().__init__(dataset_dir)

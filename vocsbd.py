@@ -23,7 +23,6 @@ from .dataset import Dataset
 
 
 class SBD(Dataset):
-
     def __init__(self, dataset_dir):
 
         super(SBD, self).__init__(dataset_dir)

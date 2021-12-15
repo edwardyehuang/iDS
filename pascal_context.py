@@ -22,7 +22,6 @@ from .dataset import Dataset
 
 
 class PascalContext(Dataset):
-
     def __init__(self, dataset_dir, ignore_label_to_background=False):
 
         super().__init__(dataset_dir)

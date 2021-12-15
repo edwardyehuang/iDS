@@ -21,7 +21,6 @@ from .dataset import Dataset
 
 
 class CocoVOC(Dataset):
-    
     def __init__(self, dataset_dir):
 
         super(CocoVOC, self).__init__(dataset_dir)

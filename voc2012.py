@@ -23,7 +23,6 @@ from .dataset import Dataset
 
 
 class Voc2012(Dataset):
-
     def __init__(self, dataset_dir):
 
         super().__init__(dataset_dir)

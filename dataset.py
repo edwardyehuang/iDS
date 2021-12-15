@@ -13,7 +13,6 @@ from iseg.data_process.pipeline import StandardArgumentsPipeline
 
 
 class Dataset(object):
-    
     @property
     def dataset_dir(self):
         return self.__dataset_dir

@@ -22,7 +22,6 @@ from .dataset import Dataset
 
 
 class CityScapesFine(Dataset):
-
     def __init__(self, dataset_dir):
 
         super(CityScapesFine, self).__init__(dataset_dir)
