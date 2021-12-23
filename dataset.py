@@ -9,7 +9,7 @@ from PIL import Image
 
 import ids.tfrecordutil as tfrecordutil
 
-from iseg.data_process.pipeline import StandardArgumentsPipeline
+from iseg.data_process.pipeline import StandardAugmentationsPipeline
 
 
 class Dataset(object):
@@ -194,7 +194,7 @@ class Dataset(object):
 
     def create_argument_pipeline(self, training=False):
 
-        return StandardArgumentsPipeline(
+        return StandardAugmentationsPipeline(
             training=training,
             mean_pixel=self.mean_pixel,
             ignore_label=self.ignore_label,
