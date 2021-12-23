@@ -50,8 +50,8 @@ class Dataset(object):
 
         self.use_tfrecord = True
 
-        self.__train_arugments_pipeline = None
-        self.__val_arguments_pipeline = None
+        self.__train_augments_pipeline = None
+        self.__val_augments_pipeline = None
 
     def load_data_paths(self, dataset_dir):
         raise RuntimeError("You shoud not call the base class")
@@ -182,17 +182,17 @@ class Dataset(object):
     def process_tensor_ds(self, ds, is_training=False):
 
         if is_training:
-            if not self.__train_arugments_pipeline:
-                self.__train_arugments_pipeline = self.create_argument_pipeline(True)
+            if not self.__train_augments_pipeline:
+                self.__train_augments_pipeline = self.create_augment_pipeline(True)
 
-            return self.__train_arugments_pipeline(ds)
+            return self.__train_augments_pipeline(ds)
         else:
-            if not self.__val_arguments_pipeline:
-                self.__val_arguments_pipeline = self.create_argument_pipeline(False)
+            if not self.__val_augments_pipeline:
+                self.__val_augments_pipeline = self.create_augment_pipeline(False)
 
-            return self.__val_arguments_pipeline(ds)
+            return self.__val_augments_pipeline(ds)
 
-    def create_argument_pipeline(self, training=False):
+    def create_augment_pipeline(self, training=False):
 
         return StandardAugmentationsPipeline(
             training=training,
