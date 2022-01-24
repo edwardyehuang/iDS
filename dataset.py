@@ -10,6 +10,7 @@ from PIL import Image
 import ids.tfrecordutil as tfrecordutil
 
 from iseg.data_process.pipeline import StandardAugmentationsPipeline
+from iseg.utils.data_loader import load_image_tensor_from_path
 
 
 class Dataset(object):
@@ -169,15 +170,8 @@ class Dataset(object):
 
     def load_tensor_from_path(self, image_path, label_path):
 
-        image_tensor = tf.image.decode_jpeg(tf.io.read_file(image_path), channels=3)
-        image_tensor = tf.cast(image_tensor, tf.float32)
+        return load_image_tensor_from_path(image_path, label_path)
 
-        label_tensor = None
-
-        if label_path is not None:
-            label_tensor = self._load_label_to_tensor(label_path)
-
-        return image_tensor, label_tensor
 
     def process_tensor_ds(self, ds, is_training=False):
 
@@ -211,20 +205,3 @@ class Dataset(object):
             random_brightness=self.random_brightness,
             photo_metric_distortions=self.photo_metric_distortion,
         )
-
-    def _load_label_to_tensor(self, label_path):
-        label_tensor = tf.py_function(self.__load_label_to_tensor_internel, [label_path], tf.int32)
-        label_tensor.set_shape([None, None, 1])
-
-        return label_tensor
-
-    def __load_label_to_tensor_internel(self, path_tensor):
-
-        label_path = path_tensor.numpy()
-        label_image = Image.open(label_path)
-        label_array = tf.keras.preprocessing.image.img_to_array(label_image, "channels_last")
-
-        label_tensor = tf.convert_to_tensor(label_array)
-        label_tensor = tf.cast(label_tensor, tf.int32)
-
-        return label_tensor
