@@ -26,6 +26,7 @@ class Dataset(object):
         self.ignore_label = 255
         self.num_class = 21
         self.val_image_count = 0
+        self.class_weights=None
 
         self.crop_height = 513
         self.crop_width = 513
