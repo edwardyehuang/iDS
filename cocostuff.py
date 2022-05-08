@@ -6,8 +6,7 @@
 import os
 import tensorflow as tf
 import numpy as np
-
-from PIL import Image
+import random
 
 INAGE_DIR = "images"
 LABEL_DIR = "labels"
@@ -48,6 +47,9 @@ class Cocostuff(Dataset):
 
         with open(names_list_path, "r") as f:
             images_names = f.read().split()
+
+        if self.shuffle_raw_image_paths:
+            random.shuffle(images_names)
 
         images_paths = [os.path.join(images_dir, image_name + IMAGE_FILE_EXTENSION) for image_name in images_names]
         labels_paths = [os.path.join(labels_dir, image_name + LABEL_FILE_EXTENSION) for image_name in images_names]

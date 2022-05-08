@@ -50,6 +50,8 @@ class Dataset(object):
         self.compress = False
         self.trainval = False
 
+        self.shuffle_raw_image_paths = False
+
         self.use_tfrecord = True
 
         self.__train_augments_pipeline = None
