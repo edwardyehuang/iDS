@@ -29,6 +29,7 @@ class PascalContext(Dataset):
         self.ignore_label = 0
         self.num_class = 59
         self.val_image_count = 5105
+        self.compress = True
 
         if ignore_label_to_background:
             self.num_class = 60
