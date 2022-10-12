@@ -31,6 +31,7 @@ class CityScapesFine(Dataset):
         self.ignore_label = 255
         self.num_class = 19
         self.val_image_count = 500
+        self.compress = True
 
         self.class_weights = [
             0.8373, 0.9180, 0.8660, 1.0345, 1.0166, 0.9969, 0.9754,
