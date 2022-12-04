@@ -32,11 +32,13 @@ class CityScapesFine(Dataset):
         self.num_class = 19
         self.val_image_count = 500
         self.compress = True
-
+        
+        '''
         self.class_weights = [
             0.8373, 0.9180, 0.8660, 1.0345, 1.0166, 0.9969, 0.9754,
             1.0489, 0.8786, 1.0023, 0.9539, 0.9843, 1.1116, 0.9037,
             1.0865, 1.0955, 1.0865, 1.1529, 1.0507]
+        '''
 
     def load_data_paths(self, dataset_dir):
 
