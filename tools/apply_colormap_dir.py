@@ -54,6 +54,8 @@ def apply_colormap_to_dir(input_dir, output_dir=None, colormap=None):
 
         counter += 1
 
+        img.close()
+
         tf.print("Processed {}".format(counter))
 
 
