@@ -93,9 +93,9 @@ def __save_converted_string(processed_list, output_path, compress=False):
 
     option = "ZLIB" if compress else None
 
-    writer = tf.io.TFRecordWriter(output_path, option)
+    writer = tf.data.experimental.TFRecordWriter(output_path, option)
     writer.write(ds)
-    writer.close()
+    # writer.close()
 
 
 def map_ds_to_example_string(tensors, example_mapping_fn):
