@@ -21,6 +21,7 @@ from common_flags import FLAGS
 
 from ids.voc2012 import get_colormap as get_voc2012_colormap
 from ids.cityscapes_fine import get_colormap as get_cityscapes_colormap
+from ids.tools.colormaps import *
 
 flags.DEFINE_string("input_dir", None, "input dir path")
 flags.DEFINE_string("output_dir", None, "output dir path")
@@ -69,6 +70,8 @@ def main(argv):
         colormap = get_voc2012_colormap()
     elif colormap_name == "cityscapes":
         colormap = get_cityscapes_colormap()
+    elif colormap_name == "celebamaskhqlite":
+        colormap = celebamaskhq_lite_colors()
     else:
         raise ValueError(f"Not support colormap = {colormap_name}")
 
