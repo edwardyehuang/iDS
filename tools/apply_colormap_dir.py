@@ -70,6 +70,8 @@ def main(argv):
         colormap = get_voc2012_colormap()
     elif colormap_name == "cityscapes":
         colormap = get_cityscapes_colormap()
+    elif colormap_name == "celebamaskhq":
+        colormap = celebamaskhq_colors()  
     elif colormap_name == "celebamaskhqlite":
         colormap = celebamaskhq_lite_colors()
     else:

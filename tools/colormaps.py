@@ -2,51 +2,51 @@ import numpy as np
 
 
 def celebamaskhq_colors():
-    colormap = [
-        [0, 0, 0], # background
-        [255, 85, 0], # skin 
-        [255, 0, 85], # l_brow
-        [255, 0, 85], # r_brow
-        [0, 0, 255], # l_eye
-        [0, 0, 255], # r_eye
-        [85, 255, 0], # eye_g
-        [0, 170, 255], # l_ear
-        [0, 170, 255], # r_ear
-        [0, 255, 170], # ear_r
-        [0, 255, 0], # nose
-        [85, 0, 255], # mouth
-        [170, 0, 255], # u_lip
-        [0, 85, 255], # l_lip
-        [255, 170, 0], # neck
-        [255, 170, 0], # neck_l
-        [255, 255, 85], # cloth
-        [255, 0, 0], # hair
-        [255, 0, 255] # hat
-    ]
+    colormap = np.array([
+        [0,  0,  0], 
+        [204, 0,  0], # skin
+        [76, 153, 0], # nose
+        [204, 204, 0], # eye_g
+        [51, 51, 255], # l_eye
+        [204, 0, 204], # r_eye
+        [0, 255, 255], # l_brow
+        [51, 255, 255], # r_brow
+        [102, 51, 0], # l_ear
+        [255, 0, 0], # r_ear
+        [102, 204, 0], # mouth
+        [255, 255, 0], # u_lip
+        [0, 0, 153], # l_lip
+        [0, 0, 204], # hair
+        [255, 51, 153], # hat
+        [0, 204, 204], # ear_r
+        [0, 51, 0], # neck_l
+        [255, 153, 51], # neck
+        [0, 204, 0]],  # cloth
+        dtype=np.uint8
+    ) 
 
     return colormap
 
 
 
 def celebamaskhq_lite_colors():
-    colormap = [
-        [0, 0, 0], # background
-        [255, 85, 0], # skin 
-        [255, 0, 85], # l_brow
-        [0, 0, 255], # l_eye
-        [85, 255, 0], # eye_g
-        [0, 170, 255], # l_ear
-        [0, 255, 170], # ear_r
-        [0, 255, 0], # nose
-        [85, 0, 255], # mouth
-        [170, 0, 255], # u_lip
-        [255, 170, 0], # neck
-        [255, 170, 0], # neck_l
-        [255, 255, 85], # cloth
-        [255, 0, 0], # hair
-        [255, 0, 255] # hat
-    ]
-
-    colormap = np.array(colormap)
+    colormap = np.array([
+        [0,  0,  0], 
+        [204, 0,  0], # skin
+        [76, 153, 0], # nose
+        [204, 204, 0], # eye_g
+        [51, 51, 255], # l_eye
+        [0, 255, 255], # l_brow
+        [102, 51, 0], # l_ear
+        [102, 204, 0], # mouth
+        [255, 255, 0], # u_lip
+        [0, 0, 204], # hair
+        [255, 51, 153], # hat
+        [0, 204, 204], # ear_r
+        [0, 51, 0], # neck_l
+        [255, 153, 51], # neck
+        [0, 204, 0]],  # cloth
+        dtype=np.uint8
+    ) 
 
     return colormap
