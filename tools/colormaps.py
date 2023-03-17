@@ -40,6 +40,7 @@ def celebamaskhq_lite_colors():
         [102, 51, 0], # l_ear
         [102, 204, 0], # mouth
         [255, 255, 0], # u_lip
+        [0, 0, 153], # l_lip
         [0, 0, 204], # hair
         [255, 51, 153], # hat
         [0, 204, 204], # ear_r
