@@ -10,7 +10,7 @@ def celebamaskhq_colors():
         [51, 51, 255], # l_eye
         [204, 0, 204], # r_eye
         [0, 255, 255], # l_brow
-        [51, 255, 255], # r_brow
+        [255, 204, 204], # r_brow
         [102, 51, 0], # l_ear
         [255, 0, 0], # r_ear
         [102, 204, 0], # mouth
@@ -26,8 +26,6 @@ def celebamaskhq_colors():
     ) 
 
     return colormap
-
-
 
 def celebamaskhq_lite_colors():
     colormap = np.array([
