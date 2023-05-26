@@ -54,6 +54,8 @@ class Dataset(object):
 
         self.use_tfrecord = True
 
+        self.apply_cache = False
+
         self.__train_augments_pipeline = None
         self.__val_augments_pipeline = None
 
@@ -81,6 +83,10 @@ class Dataset(object):
 
         if self.trainval:
             train_ds = train_ds.concatenate(val_ds)
+
+        if self.apply_cache:
+            train_ds = train_ds.cache()
+            val_ds = val_ds.cache()
 
         train_ds = self.process_tensor_ds(train_ds, True)
         val_ds = self.process_tensor_ds(val_ds, False)
