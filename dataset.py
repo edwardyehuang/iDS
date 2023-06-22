@@ -85,8 +85,11 @@ class Dataset(object):
             train_ds = train_ds.concatenate(val_ds)
 
         if self.apply_cache:
-            train_ds = train_ds.cache()
-            val_ds = val_ds.cache()
+            if train_ds is not None:
+                train_ds = train_ds.cache()
+
+            if val_ds is not None:
+                val_ds = val_ds.cache()
 
         train_ds = self.process_tensor_ds(train_ds, True)
         val_ds = self.process_tensor_ds(val_ds, False)
