@@ -23,6 +23,8 @@ from ids.voc2012 import get_colormap as get_voc2012_colormap
 from ids.cityscapes_fine import get_colormap as get_cityscapes_colormap
 from ids.tools.colormaps import *
 
+from tqdm import tqdm
+
 flags.DEFINE_string("input_dir", None, "input dir path")
 flags.DEFINE_string("output_dir", None, "output dir path")
 flags.DEFINE_string("colormap", "voc2012", "colormap name")
@@ -38,7 +40,7 @@ def apply_colormap_to_dir(input_dir, output_dir=None, colormap=None):
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
 
-    for filename in tf.io.gfile.listdir(input_dir):
+    for filename in tqdm(tf.io.gfile.listdir(input_dir)):
 
         input_path = os.path.join(input_dir, filename)
         output_path = os.path.join(output_dir, filename)
@@ -56,8 +58,6 @@ def apply_colormap_to_dir(input_dir, output_dir=None, colormap=None):
         counter += 1
 
         img.close()
-
-        tf.print("Processed {}".format(counter))
 
 
 def main(argv):
