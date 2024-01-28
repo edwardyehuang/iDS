@@ -53,6 +53,7 @@ class Dataset(object):
         self.shuffle_raw_image_paths = False
 
         self.use_tfrecord = True
+        self._force_use_raw_image = False
 
         self.apply_cache = False
 
@@ -67,7 +68,7 @@ class Dataset(object):
         train_ds = None
         val_ds = None
 
-        if not self.use_tfrecord:
+        if not self.use_tfrecord or self._force_use_raw_image:
             train_ds, val_ds = self.load_trainval_tensor_ds()
         else:
             if not isinstance(self.__dataset_dir, str):
