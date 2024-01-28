@@ -181,6 +181,9 @@ class Dataset(object):
         return train_ds, val_ds
 
     def load_tensor_ds_from_path(self, paths):
+
+        print(*paths, sep="\n")
+
         path_dataset = tf.data.Dataset.from_tensor_slices(tuple(paths))
         return path_dataset.map(self.load_tensor_from_path, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
