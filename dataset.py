@@ -165,6 +165,9 @@ class Dataset(object):
         return features
 
     def load_trainval_tensor_ds(self):
+
+        print(f"Loading raw image from {self.__dataset_dir}")
+
         training_paths, val_paths = self.load_data_paths(self.__dataset_dir)
 
         train_ds = val_ds = None
