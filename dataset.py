@@ -86,6 +86,9 @@ class Dataset(object):
             train_ds = train_ds.concatenate(val_ds)
 
         if self.apply_cache:
+
+            print("Applied dataset cache")
+
             if train_ds is not None:
                 train_ds = train_ds.cache()
 
