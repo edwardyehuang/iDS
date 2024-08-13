@@ -87,13 +87,13 @@ class Dataset(object):
 
         if self.apply_cache:
 
-            print("Applied dataset cache")
-
             if train_ds is not None and training:
                 train_ds = train_ds.cache()
+                print("Applied train_ds cache")
 
             if val_ds is not None and not training:
                 val_ds = val_ds.cache()
+                print("Applied val_ds cache")
 
         train_ds = self.process_tensor_ds(train_ds, True)
         val_ds = self.process_tensor_ds(val_ds, False)
