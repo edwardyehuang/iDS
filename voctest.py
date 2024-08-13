@@ -38,7 +38,7 @@ class VOCTest(Dataset):
 
         return self.__get_data_paths(test_list_path, image_dir), None
 
-    def load_tf_data(self):
+    def load_tf_data(self, training=False):
 
         (test_images_paths, _), _ = self.load_data()
 

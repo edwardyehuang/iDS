@@ -63,7 +63,7 @@ class Dataset(object):
     def load_data_paths(self, dataset_dir):
         raise RuntimeError("You shoud not call the base class")
 
-    def load_tf_data(self):
+    def load_tf_data(self, training=False):
 
         train_ds = None
         val_ds = None
@@ -89,10 +89,10 @@ class Dataset(object):
 
             print("Applied dataset cache")
 
-            if train_ds is not None:
+            if train_ds is not None and training:
                 train_ds = train_ds.cache()
 
-            if val_ds is not None:
+            if val_ds is not None and not training:
                 val_ds = val_ds.cache()
 
         train_ds = self.process_tensor_ds(train_ds, True)
