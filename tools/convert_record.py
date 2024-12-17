@@ -23,7 +23,7 @@ flags.DEFINE_multi_string("tfrecord_outputs", None, "outputs of tfrecord")
 
 flags.DEFINE_bool("compress", False, "Compress tfrecord")
 
-flags.DEFINE_float("size_split", 8e9, "max size of each tfrecord file")
+flags.DEFINE_float("size_split", 1e9, "max size of each tfrecord file")
 
 
 def main(argv):
