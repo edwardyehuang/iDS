@@ -45,6 +45,8 @@ class Dataset(object):
         self.random_brightness = True
         self.photo_metric_distortion = False
 
+        self.random_erase = True
+
         self.swap_trainval = False
 
         self.compress = False
@@ -223,4 +225,5 @@ class Dataset(object):
             scale_factor_step_size=self.scale_factor_step_size,
             random_brightness=self.random_brightness,
             photo_metric_distortions=self.photo_metric_distortion,
+            random_erase=self.random_erase,
         )
