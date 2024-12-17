@@ -33,6 +33,9 @@ def main(argv):
 
     if len(dataset_names) != len(output_paths):
         raise ValueError("Num of datasets and output path does not matched")
+    
+    print(f"Converting datasets: {dataset_names} to tfrecord")
+    print(f"Splitted size: {FLAGS.size_split}")
 
     for i in range(len(dataset_names)):
         name = dataset_names[i]
