@@ -187,7 +187,7 @@ class Dataset(object):
 
         if self.tfrecord_image_encoded:
             image_tensor = tf.cast(image_tensor, tf.uint8)
-            image_tensor = tf.io.encode_png(image_tensor)
+            image_tensor = tf.io.encode_png(image_tensor, compression=9)
 
         features[ss.IMAGE] = tfrecordutil.bytes_feature(image_tensor)
         features[ss.HEIGHT] = tfrecordutil.int64_feature(image_shape[0])
