@@ -25,6 +25,8 @@ flags.DEFINE_bool("compress", False, "Compress tfrecord")
 
 flags.DEFINE_float("size_split", 1e9, "max size of each tfrecord file")
 
+flags.DEFINE_integer("designated_index", -1, "only convert the designated index of the dataset")
+
 
 def main(argv):
 
@@ -42,7 +44,12 @@ def main(argv):
         output_dir = output_paths[i]
 
         dataset = dataset_name_to_dataset(name)
-        dataset.save_tf_record(output_dir, compress=FLAGS.compress, size_split=FLAGS.size_split)
+        dataset.save_tf_record(
+            output_dir, 
+            compress=FLAGS.compress, 
+            size_split=FLAGS.size_split,
+            designated_index=FLAGS.designated_index,
+        )
 
 
 if __name__ == "__main__":

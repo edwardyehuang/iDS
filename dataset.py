@@ -126,7 +126,7 @@ class Dataset(object):
             )
 
 
-    def save_tf_record(self, output_dir, compress=False, size_split=8e9):
+    def save_tf_record(self, output_dir, compress=False, size_split=8e9, designated_index=-1):
 
         train_ds, val_ds = self.load_trainval_tensor_ds()
 
@@ -138,6 +138,7 @@ class Dataset(object):
                 output_prefix=ss.TRAIN,
                 compress=compress,
                 size_split=size_split,
+                designated_index=designated_index,
             )
 
         if val_ds is not None:
@@ -148,6 +149,7 @@ class Dataset(object):
                 output_prefix=ss.VAL,
                 compress=compress,
                 size_split=size_split,
+                designated_index=designated_index,
             )
 
 

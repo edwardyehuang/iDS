@@ -55,7 +55,14 @@ def read_tesnor_ds_from_tfrecords_dir(
 
 
 def save_tensor_ds_to_tfrecord(
-    ds, example_mapping_fn, output_dir, output_prefix, output_ext=".tfrecord", size_split=4e9, compress=False
+    ds, 
+    example_mapping_fn, 
+    output_dir, 
+    output_prefix, 
+    output_ext=".tfrecord", 
+    size_split=4e9, 
+    compress=False,
+    designated_index=-1,
 ):
 
     if not os.path.isdir(output_dir):
@@ -87,8 +94,10 @@ def save_tensor_ds_to_tfrecord(
         print("Converted {}".format(count))
 
         if bytes_count >= size_split:
-            path = "{}-{}{}".format(output_path_with_prefix, split_count, output_ext)
-            save_tfrecord_to_path(processed_list, path)
+
+            if designated_index is None or designated_index == -1 or designated_index == split_count:
+                path = "{}-{}{}".format(output_path_with_prefix, split_count, output_ext)
+                save_tfrecord_to_path(processed_list, path)
 
             split_count += 1
             processed_list.clear()
