@@ -54,12 +54,13 @@ class Dataset(object):
 
         self.shuffle_raw_image_paths = False
 
+        # tfrecord options
         self.use_tfrecord = True
         self._force_use_raw_image = False
+        self.tfrecord_debug_mode = False
+        self.tfrecord_image_encoded = False
 
         self.apply_cache = False
-
-        self.tfrecord_debug_mode = False
 
         self.__train_augments_pipeline = None
         self.__val_augments_pipeline = None
@@ -152,7 +153,7 @@ class Dataset(object):
                 designated_index=designated_index,
             )
 
-
+    @tf.autograph.experimental.do_not_convert
     def _tfrecord_read_map_fn(self, example_proto):
         features = {
             ss.IMAGE: tf.io.FixedLenFeature([], tf.string, default_value=""),
@@ -163,19 +164,30 @@ class Dataset(object):
         }
 
         features = tf.io.parse_single_example(example_proto, features)
-        image = tf.io.parse_tensor(features[ss.IMAGE], tf.float32)
+        
         label = tf.io.parse_tensor(features[ss.LABEL], tf.int32)
+
+        if self.tfrecord_image_encoded:
+            image = tf.io.parse_tensor(features[ss.IMAGE], tf.string)
+            image = tf.io.decode_jpeg(image)
+            image = tf.cast(image, tf.float32)
+        else:
+            image = tf.io.parse_tensor(features[ss.IMAGE], tf.float32)
 
         image = tf.reshape(image, [features[ss.HEIGHT], features[ss.WIDTH], features[ss.DEPTH]])
         label = tf.reshape(label, [features[ss.HEIGHT], features[ss.WIDTH], 1])
 
         return image, label
 
-
+    @tf.autograph.experimental.do_not_convert
     def _tfrecord_write_map_fn(self, image_tensor, label_tensor):
         image_shape = tf.shape(image_tensor)
 
         features = dict()
+
+        if self.tfrecord_image_encoded:
+            image_tensor = tf.cast(image_tensor, tf.uint8)
+            image_tensor = tf.io.encode_jpeg(image_tensor)
 
         features[ss.IMAGE] = tfrecordutil.bytes_feature(image_tensor)
         features[ss.HEIGHT] = tfrecordutil.int64_feature(image_shape[0])
