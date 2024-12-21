@@ -98,6 +98,8 @@ def save_tensor_ds_to_tfrecord(
             if designated_index is None or designated_index == -1 or designated_index == split_count:
                 path = "{}-{}{}".format(output_path_with_prefix, split_count, output_ext)
                 save_tfrecord_to_path(processed_list, path)
+            else:
+                print("Skip saving tfrecord : {}-{}".format(output_path_with_prefix, split_count))
 
             split_count += 1
             processed_list.clear()
