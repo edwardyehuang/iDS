@@ -169,7 +169,7 @@ class Dataset(object):
 
         if self.tfrecord_image_encoded:
             image = tf.io.parse_tensor(features[ss.IMAGE], tf.string)
-            image = tf.io.decode_jpeg(image)
+            image = tf.io.decode_png(image)
             image = tf.cast(image, tf.float32)
         else:
             image = tf.io.parse_tensor(features[ss.IMAGE], tf.float32)
@@ -187,7 +187,7 @@ class Dataset(object):
 
         if self.tfrecord_image_encoded:
             image_tensor = tf.cast(image_tensor, tf.uint8)
-            image_tensor = tf.io.encode_jpeg(image_tensor)
+            image_tensor = tf.io.encode_png(image_tensor)
 
         features[ss.IMAGE] = tfrecordutil.bytes_feature(image_tensor)
         features[ss.HEIGHT] = tfrecordutil.int64_feature(image_shape[0])
