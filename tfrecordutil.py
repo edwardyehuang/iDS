@@ -35,8 +35,10 @@ def read_tesnor_ds_from_tfrecords_dir(
         if debug_mode:
             debug_ds = ds.map(example_mapping_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
+            print(f"Checking tfrecord : {path}")
+
             checked_count = 0
-            for tensors in debug_ds:
+            for _ in debug_ds:
                 checked_count += 1
 
             print(f"Tfrecord : {path} checked {checked_count} examples : OK")
