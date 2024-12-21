@@ -62,8 +62,10 @@ class Dataset(object):
         self.__train_augments_pipeline = None
         self.__val_augments_pipeline = None
 
+
     def load_data_paths(self, dataset_dir):
         raise RuntimeError("You shoud not call the base class")
+
 
     def load_tf_data(self, training=False):
 
@@ -102,6 +104,7 @@ class Dataset(object):
 
         return train_ds, val_ds
 
+
     def read_tf_record(self, training=False):
         if training:
             return tfrecordutil.read_tesnor_ds_from_tfrecords_dir(
@@ -111,6 +114,7 @@ class Dataset(object):
             return tfrecordutil.read_tesnor_ds_from_tfrecords_dir(
                 self._tfrecord_read_map_fn, self.__dataset_dir, ss.VAL, compress=self.compress
             )
+
 
     def save_tf_record(self, output_dir, compress=False, size_split=8e9):
 
@@ -136,6 +140,7 @@ class Dataset(object):
                 size_split=size_split,
             )
 
+
     def _tfrecord_read_map_fn(self, example_proto):
         features = {
             ss.IMAGE: tf.io.FixedLenFeature([], tf.string, default_value=""),
@@ -154,6 +159,7 @@ class Dataset(object):
 
         return image, label
 
+
     def _tfrecord_write_map_fn(self, image_tensor, label_tensor):
         image_shape = tf.shape(image_tensor)
 
@@ -168,6 +174,7 @@ class Dataset(object):
             features[ss.LABEL] = tfrecordutil.bytes_feature(label_tensor)
 
         return features
+
 
     def load_trainval_tensor_ds(self):
 
@@ -185,9 +192,11 @@ class Dataset(object):
 
         return train_ds, val_ds
 
+
     def load_tensor_ds_from_path(self, paths):
         path_dataset = tf.data.Dataset.from_tensor_slices(tuple(paths))
         return path_dataset.map(self.load_tensor_from_path, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
 
     def load_tensor_from_path(self, image_path, label_path):
 
@@ -206,6 +215,7 @@ class Dataset(object):
                 self.__val_augments_pipeline = self.create_augment_pipeline(False)
 
             return self.__val_augments_pipeline(ds)
+
 
     def create_augment_pipeline(self, training=False):
 
