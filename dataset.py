@@ -59,6 +59,8 @@ class Dataset(object):
 
         self.apply_cache = False
 
+        self.tfrecord_debug_mode = False
+
         self.__train_augments_pipeline = None
         self.__val_augments_pipeline = None
 
@@ -108,11 +110,19 @@ class Dataset(object):
     def read_tf_record(self, training=False):
         if training:
             return tfrecordutil.read_tesnor_ds_from_tfrecords_dir(
-                self._tfrecord_read_map_fn, self.__dataset_dir, ss.TRAIN, compress=self.compress
+                self._tfrecord_read_map_fn, 
+                self.__dataset_dir, 
+                ss.TRAIN, 
+                compress=self.compress,
+                debug_mode=self.tfrecord_debug_mode,
             )
         else:
             return tfrecordutil.read_tesnor_ds_from_tfrecords_dir(
-                self._tfrecord_read_map_fn, self.__dataset_dir, ss.VAL, compress=self.compress
+                self._tfrecord_read_map_fn, 
+                self.__dataset_dir, 
+                ss.VAL, 
+                compress=self.compress,
+                debug_mode=self.tfrecord_debug_mode,
             )
 
 

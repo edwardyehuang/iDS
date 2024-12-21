@@ -12,7 +12,12 @@ import gc
 
 
 def read_tesnor_ds_from_tfrecords_dir(
-    example_mapping_fn, input_dir, input_prefix, input_ext=".tfrecord", compress=False
+    example_mapping_fn, 
+    input_dir, 
+    input_prefix, 
+    input_ext=".tfrecord", 
+    compress=False,
+    debug_mode=False,
 ):
     matched_files = []
 
@@ -26,6 +31,15 @@ def read_tesnor_ds_from_tfrecords_dir(
 
     for path in matched_files:
         ds = tf.data.TFRecordDataset(path, compression_type=compress, num_parallel_reads=tf.data.experimental.AUTOTUNE)
+
+        if debug_mode:
+            debug_ds = ds.map(example_mapping_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
+            checked_count = 0
+            for tensors in debug_ds:
+                checked_count += 1
+
+            print(f"Tfrecord : {path} checked {checked_count} examples : OK")
 
         if dataset is None:
             dataset = ds
