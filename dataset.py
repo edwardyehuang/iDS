@@ -58,7 +58,7 @@ class Dataset(object):
         self.use_tfrecord = True
         self._force_use_raw_image = False
         self.tfrecord_debug_mode = False
-        self.tfrecord_image_encoded = False
+        self.tfrecord_image_encoded = True
 
         self.apply_cache = False
 
