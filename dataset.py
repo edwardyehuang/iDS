@@ -5,12 +5,15 @@
 
 import iseg.static_strings as ss
 import tensorflow as tf
-from PIL import Image
 
 import ids.tfrecordutil as tfrecordutil
 
 from iseg.data_process.pipeline import StandardAugmentationsPipeline
 from iseg.utils.data_loader import load_image_tensor_from_path
+
+
+TFRECOD_PNG = "png"
+TFRECOD_JPEG = "jpeg"
 
 
 class Dataset(object):
@@ -59,6 +62,7 @@ class Dataset(object):
         self._force_use_raw_image = False
         self.tfrecord_debug_mode = False
         self.tfrecord_image_encoded = True
+        self.tfrecord_image_encoded_type = TFRECOD_PNG
 
         self.apply_cache = False
 
@@ -153,6 +157,26 @@ class Dataset(object):
                 designated_index=designated_index,
             )
 
+
+    def tfrecord_decode_image(self, image_feature):
+
+        if not self.tfrecord_image_encoded:
+            return image_feature
+
+        image = tf.io.parse_tensor(image_feature, tf.string)
+
+        if self.tfrecord_image_encoded_type == TFRECOD_PNG:
+            image = tf.io.decode_png(image)
+        elif self.tfrecord_image_encoded_type == TFRECOD_JPEG:
+            image = tf.io.decode_jpeg(image)
+        else:
+            image = tf.io.decode_image(image)
+
+        image = tf.cast(image, tf.float32)
+        
+        return image
+
+
     @tf.autograph.experimental.do_not_convert
     def _tfrecord_read_map_fn(self, example_proto):
         features = {
@@ -165,19 +189,29 @@ class Dataset(object):
 
         features = tf.io.parse_single_example(example_proto, features)
         
+        image = self.tfrecord_decode_image(features[ss.IMAGE])
         label = tf.io.parse_tensor(features[ss.LABEL], tf.int32)
-
-        if self.tfrecord_image_encoded:
-            image = tf.io.parse_tensor(features[ss.IMAGE], tf.string)
-            image = tf.io.decode_png(image)
-            image = tf.cast(image, tf.float32)
-        else:
-            image = tf.io.parse_tensor(features[ss.IMAGE], tf.float32)
 
         image = tf.reshape(image, [features[ss.HEIGHT], features[ss.WIDTH], features[ss.DEPTH]])
         label = tf.reshape(label, [features[ss.HEIGHT], features[ss.WIDTH], 1])
 
         return image, label
+    
+
+    def tfrecord_encode_image(self, image_tensor):
+
+        if self.tfrecord_image_encoded:
+            image_tensor = tf.cast(image_tensor, tf.uint8)
+
+            if self.tfrecord_image_encoded_type == TFRECOD_PNG:
+                image_tensor = tf.io.encode_png(image_tensor, compression=9)
+            elif self.tfrecord_image_encoded_type == TFRECOD_JPEG:
+                image_tensor = tf.io.encode_jpeg(image_tensor, format="rgb", quality=100)
+            else:
+                raise ValueError(f"Unknown image encoded type: {self.tfrecord_image_encoded_type}")
+
+        return image_tensor
+
 
     @tf.autograph.experimental.do_not_convert
     def _tfrecord_write_map_fn(self, image_tensor, label_tensor):
@@ -185,9 +219,7 @@ class Dataset(object):
 
         features = dict()
 
-        if self.tfrecord_image_encoded:
-            image_tensor = tf.cast(image_tensor, tf.uint8)
-            image_tensor = tf.io.encode_png(image_tensor, compression=9)
+        image_tensor = self.tfrecord_encode_image(image_tensor)
 
         features[ss.IMAGE] = tfrecordutil.bytes_feature(image_tensor)
         features[ss.HEIGHT] = tfrecordutil.int64_feature(image_shape[0])
