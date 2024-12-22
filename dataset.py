@@ -52,7 +52,7 @@ class Dataset(object):
 
         self.swap_trainval = False
 
-        self.compress = False
+        self.compress = True
         self.trainval = False
 
         self.shuffle_raw_image_paths = False
