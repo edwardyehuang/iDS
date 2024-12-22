@@ -63,6 +63,8 @@ class Dataset(object):
         self.tfrecord_debug_mode = False
         self.tfrecord_image_encoded = True
         self.tfrecord_image_encoded_type = TFRECOD_JPEG
+        self.tfrecord_jepg_quality = 100
+        self.tfrecord_jepg_chroma_downsampling = False
 
         self.apply_cache = False
 
@@ -209,8 +211,8 @@ class Dataset(object):
                 image_tensor = tf.io.encode_jpeg(
                     image_tensor, 
                     format="rgb", 
-                    quality=100, 
-                    chroma_downsampling=False,
+                    quality=self.tfrecord_jepg_quality, 
+                    chroma_downsampling=self.tfrecord_jepg_chroma_downsampling,
                     optimize_size=True,
                 )
             else:
