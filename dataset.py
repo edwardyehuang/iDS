@@ -62,7 +62,7 @@ class Dataset(object):
         self._force_use_raw_image = False
         self.tfrecord_debug_mode = False
         self.tfrecord_image_encoded = True
-        self.tfrecord_image_encoded_type = TFRECOD_PNG
+        self.tfrecord_image_encoded_type = TFRECOD_JPEG
 
         self.apply_cache = False
 
@@ -168,7 +168,7 @@ class Dataset(object):
         if self.tfrecord_image_encoded_type == TFRECOD_PNG:
             image = tf.io.decode_png(image)
         elif self.tfrecord_image_encoded_type == TFRECOD_JPEG:
-            image = tf.io.decode_jpeg(image)
+            image = tf.io.decode_jpeg(image, dct_method="INTEGER_ACCURATE", try_recover_truncated=True)
         else:
             image = tf.io.decode_image(image)
 
@@ -206,7 +206,7 @@ class Dataset(object):
             if self.tfrecord_image_encoded_type == TFRECOD_PNG:
                 image_tensor = tf.io.encode_png(image_tensor, compression=9)
             elif self.tfrecord_image_encoded_type == TFRECOD_JPEG:
-                image_tensor = tf.io.encode_jpeg(image_tensor, format="rgb", quality=100)
+                image_tensor = tf.io.encode_jpeg(image_tensor, format="rgb", quality=100, chroma_downsampling=False)
             else:
                 raise ValueError(f"Unknown image encoded type: {self.tfrecord_image_encoded_type}")
 

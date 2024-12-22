@@ -18,7 +18,7 @@ SEGMENTATION_EVAL_FILENAME = "val.txt"
 IMAGE_FILE_EXTENSION = ".png"
 LABEL_FILE_EXTENSION = ".png"
 
-from .dataset import Dataset
+from .dataset import Dataset, TFRECOD_PNG
 
 
 class CityScapesFine(Dataset):
@@ -32,6 +32,8 @@ class CityScapesFine(Dataset):
         self.num_class = 19
         self.val_image_count = 500
         self.compress = True
+
+        self.tfrecord_image_encoded_type = TFRECOD_PNG
         
         '''
         self.class_weights = [
