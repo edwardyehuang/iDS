@@ -45,6 +45,9 @@ class Dataset(object):
         self.min_resize_value = None
         self.max_resize_value = None
 
+        self.max_resize_height = None
+        self.max_resize_width = None
+
         self.random_brightness = True
         self.photo_metric_distortion = False
 
@@ -287,8 +290,8 @@ class Dataset(object):
             training=training,
             mean_pixel=self.mean_pixel,
             ignore_label=self.ignore_label,
-            min_resize_value=self.min_resize_value,
-            max_resize_value=self.max_resize_value,
+            max_resize_height=self.max_resize_height,
+            max_resize_width=self.max_resize_width,
             crop_height=self.crop_height,
             crop_width=self.crop_width,
             eval_crop_height=self.eval_crop_height,
