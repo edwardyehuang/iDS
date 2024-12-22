@@ -206,7 +206,13 @@ class Dataset(object):
             if self.tfrecord_image_encoded_type == TFRECOD_PNG:
                 image_tensor = tf.io.encode_png(image_tensor, compression=9)
             elif self.tfrecord_image_encoded_type == TFRECOD_JPEG:
-                image_tensor = tf.io.encode_jpeg(image_tensor, format="rgb", quality=100, chroma_downsampling=False)
+                image_tensor = tf.io.encode_jpeg(
+                    image_tensor, 
+                    format="rgb", 
+                    quality=100, 
+                    chroma_downsampling=False,
+                    optimize_size=True,
+                )
             else:
                 raise ValueError(f"Unknown image encoded type: {self.tfrecord_image_encoded_type}")
 
