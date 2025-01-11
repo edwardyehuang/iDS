@@ -50,8 +50,8 @@ class Dataset(object):
 
         self.random_brightness = True
         self.photo_metric_distortion = False
-
         self.random_erase = True
+        self.random_jepg_quality = False
 
         self.swap_trainval = False
 
