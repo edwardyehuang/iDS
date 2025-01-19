@@ -30,7 +30,7 @@ class PascalContext(Dataset):
         self.num_class = 59
         self.val_image_count = 5105
         self.compress = True
-        self.random_jepg_quality = True
+        self.random_jepg_quality = False
 
         if ignore_label_to_background:
             self.num_class = 60
