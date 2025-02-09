@@ -98,7 +98,7 @@ class Dataset(object):
             train_ds = val_ds
             val_ds = tmp
 
-        if self.trainval:
+        if self.trainval and val_ds is not None:
             train_ds = train_ds.concatenate(val_ds)
 
         if self.apply_cache:
