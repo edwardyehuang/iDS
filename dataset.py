@@ -42,9 +42,6 @@ class Dataset(object):
         self.max_scale_factor = 2.0
         self.scale_factor_step_size = 0.25
 
-        self.min_resize_value = None
-        self.max_resize_value = None
-
         self.max_resize_height = None
         self.max_resize_width = None
 
