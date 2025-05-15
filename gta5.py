@@ -29,6 +29,11 @@ class GTA5(Dataset):
         self.num_class = 19
         self.compress = True
 
+        self.random_jepg_quality = True
+        
+        self.tfrecord_jepg_quality = 95
+        self.tfrecord_jepg_chroma_downsampling = True
+
 
     def load_data_paths(self, dataset_dir):
 
