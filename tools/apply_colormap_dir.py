@@ -37,6 +37,9 @@ def apply_colormap_to_dir(input_dir, output_dir=None, colormap=None):
 
     counter = 0
 
+    if output_dir is None:
+        output_dir = input_dir
+
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
 
