@@ -57,6 +57,8 @@ class Dataset(object):
 
         self.shuffle_raw_image_paths = False
 
+        self.random_noisy_eval_level = 0.0
+
         # tfrecord options
         self.use_tfrecord = True
         self._force_use_raw_image = False
@@ -300,4 +302,5 @@ class Dataset(object):
             random_brightness=self.random_brightness,
             photo_metric_distortions=self.photo_metric_distortion,
             random_erase=self.random_erase,
+            random_noisy_eval_level=self.random_noisy_eval_level,
         )
