@@ -31,8 +31,8 @@ class Dataset(object):
         self.val_image_count = 0
         self.class_weights=None
 
-        self.crop_height = 513
-        self.crop_width = 513
+        self.crop_height = 512
+        self.crop_width = 512
 
         self.eval_crop_height = None
         self.eval_crop_width = None
