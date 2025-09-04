@@ -23,6 +23,8 @@ VAL_START_ID = 476
 
 SEMANTIC_DRONE_VAL_PATCH_COUNT = -1
 
+ORGINAL_VAL_IMAGE_COUNT = 80
+
 from ids.dataset import Dataset
 
 
@@ -82,7 +84,7 @@ class SemanticDrone(Dataset):
 
         self.ignore_label = 0
         self.num_class = 23
-        self.val_image_count = 80
+        self.val_image_count = 6000
         self.compress = True
 
 
@@ -128,9 +130,9 @@ class SemanticDrone(Dataset):
                 val_label_path.append(label_path)
 
 
-        if len(val_image_path) != self.val_image_count:
-            raise ValueError(f"Val image count should be {self.val_image_count}, but got {len(val_image_path)}")
-        
+        if len(val_image_path) != ORGINAL_VAL_IMAGE_COUNT:
+            raise ValueError(f"Val image count should be {ORGINAL_VAL_IMAGE_COUNT}, but got {len(val_image_path)}")
+
 
         return ((train_image_path, train_label_path), (val_image_path, val_label_path))
     
