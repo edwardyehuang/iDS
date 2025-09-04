@@ -21,6 +21,7 @@ from common_flags import FLAGS
 
 from ids.voc2012 import get_colormap as get_voc2012_colormap
 from ids.cityscapes_fine import get_colormap as get_cityscapes_colormap
+from ids.semantic_drone import get_colormap as get_semantic_drone_colormap
 from ids.tools.colormaps import *
 
 from tqdm import tqdm
@@ -77,6 +78,8 @@ def main(argv):
         colormap = celebamaskhq_colors()  
     elif colormap_name == "celebamaskhqlite":
         colormap = celebamaskhq_lite_colors()
+    elif colormap_name == "semanticdrone":
+        colormap = get_semantic_drone_colormap()
     else:
         raise ValueError(f"Not support colormap = {colormap_name}")
 

@@ -1,5 +1,8 @@
 import os
+import numpy as np
 import tensorflow as tf
+
+import keras
 
 import iseg.static_strings as ss
 import tqdm
@@ -40,7 +43,9 @@ def create_val_imagesets(
 
 def get_colormap():
 
-    return [(0, 0, 0),
+    return np.array(
+        [
+            (0, 0, 0),
             (128, 64, 128),
             (130, 76, 0),
             (0, 102, 0),
@@ -64,7 +69,10 @@ def get_colormap():
             (112, 150, 146),
             (2, 135, 115),
             (255, 0, 0)
-    ]
+        ], 
+        np.uint8
+    )
+
 
 
 class SemanticDrone(Dataset):
@@ -251,7 +259,7 @@ class SemanticDrone(Dataset):
 
         label_image = label_image.quantize(len(get_colormap()), palette=pal_image)
 
-        label_array = tf.keras.preprocessing.image.img_to_array(label_image, "channels_last")
+        label_array = keras.preprocessing.image.img_to_array(label_image, "channels_last")
 
         label_image.close()
         pal_image.close()
