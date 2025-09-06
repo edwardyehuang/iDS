@@ -202,7 +202,11 @@ class SemanticDrone(Dataset):
 
         # for train set, we need to crop it first to reduce the computational burden
         if training:
-            pipeline.augments.insert(0, RandomCropAugment(self.crop_height, self.crop_width))
+
+            larger_crop_height = int(self.crop_height / self.min_scale_factor)
+            larger_crop_width = int(self.crop_width / self.min_scale_factor)
+
+            pipeline.augments.insert(0, RandomCropAugment(larger_crop_height, larger_crop_width))
             pipeline.augments.insert(1, RandomRotateAugment(prob_of_rotate=0.5))
 
         return pipeline
