@@ -207,7 +207,11 @@ class SemanticDrone(Dataset):
             larger_crop_width = int(self.crop_width / self.min_scale_factor)
 
             pipeline.augments.insert(0, RandomCropAugment(larger_crop_height, larger_crop_width))
-            pipeline.augments.insert(1, RandomRotateAugment(prob_of_rotate=0.5))
+            pipeline.augments.insert(1, RandomRotateAugment(
+                prob_of_rotate=0.5,
+                fill_constant_color=self.mean_pixel,
+                ignore_label=self.ignore_label,
+            ))
 
         return pipeline
     
