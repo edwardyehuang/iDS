@@ -76,11 +76,9 @@ def read_tesnor_ds_from_tfrecords_dir_parallel(
         if input_prefix in f and input_ext in f:
             matched_files.append(os.path.join(input_dir, f))
 
-    dataset = None
-
     compress = "ZLIB" if compress else None
 
-    ds = tf.data.TFRecordDataset(matched_files, compression_type=compress, num_parallel_reads=tf.data.experimental.AUTOTUNE)
+    dataset = tf.data.TFRecordDataset(matched_files, compression_type=compress, num_parallel_reads=tf.data.experimental.AUTOTUNE)
 
     if dataset is not None:
         dataset = dataset.map(example_mapping_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
