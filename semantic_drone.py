@@ -209,7 +209,7 @@ class SemanticDrone(Dataset):
             pipeline.augments.insert(0, RandomCropAugment(larger_crop_height, larger_crop_width))
             pipeline.augments.insert(1, RandomRotateAugment(
                 prob_of_rotate=0.5,
-                fill_constant_color=self.mean_pixel,
+                fill_constant_color=[0, 0, 0],
                 ignore_label=self.ignore_label,
             ))
 
