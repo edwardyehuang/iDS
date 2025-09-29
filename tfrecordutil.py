@@ -19,6 +19,15 @@ def read_tesnor_ds_from_tfrecords_dir(
     compress=False,
     debug_mode=False,
 ):
+    if not debug_mode:
+        return read_tesnor_ds_from_tfrecords_dir_parallel(
+            example_mapping_fn,
+            input_dir,
+            input_prefix,
+            input_ext=input_ext,
+            compress=compress,
+        )
+
     matched_files = []
 
     for f in tf.io.gfile.listdir(input_dir):
@@ -47,6 +56,31 @@ def read_tesnor_ds_from_tfrecords_dir(
             dataset = ds
         else:
             dataset = dataset.concatenate(ds)
+
+    if dataset is not None:
+        dataset = dataset.map(example_mapping_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
+    return dataset
+
+
+def read_tesnor_ds_from_tfrecords_dir_parallel(
+    example_mapping_fn, 
+    input_dir, 
+    input_prefix, 
+    input_ext=".tfrecord", 
+    compress=False,
+):
+    matched_files = []
+
+    for f in tf.io.gfile.listdir(input_dir):
+        if input_prefix in f and input_ext in f:
+            matched_files.append(os.path.join(input_dir, f))
+
+    dataset = None
+
+    compress = "ZLIB" if compress else None
+
+    ds = tf.data.TFRecordDataset(matched_files, compression_type=compress, num_parallel_reads=tf.data.experimental.AUTOTUNE)
 
     if dataset is not None:
         dataset = dataset.map(example_mapping_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
