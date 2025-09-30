@@ -80,7 +80,11 @@ def read_tesnor_ds_from_tfrecords_dir_parallel(
 
     dataset = tf.data.TFRecordDataset(matched_files, compression_type=compress, num_parallel_reads=tf.data.experimental.AUTOTUNE)
 
+    ignore_order = tf.data.Options()
+    ignore_order.experimental_deterministic = False
+
     if dataset is not None:
+        dataset = dataset.with_options(ignore_order)
         dataset = dataset.map(example_mapping_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
     return dataset
