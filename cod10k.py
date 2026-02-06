@@ -35,6 +35,9 @@ class COD10K(Dataset):
         self.val_image_count = 4000
         self.compress = True
 
+        self.max_resize_height = 512
+        self.max_resize_width = 512
+
     def load_data_paths(self, dataset_dir):
 
         train_dir = os.path.join(dataset_dir, TRAIN_DIR)
