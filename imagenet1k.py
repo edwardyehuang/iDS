@@ -8,10 +8,14 @@ from scipy.io import loadmat
 from ids.dataset import Dataset
 from iseg.data_process.augments import (
 	CenterCropImageAugment,
+	RandomErasingAugment,
+	RandomGaussianBlurImageAugment,
+	RandomGrayscaleImageAugment,
 	RandomBrightnessAugment,
 	RandomFlipImageAugment,
 	RandomJEPGQualityAugment,
 	RandomNoisyEvalAugment,
+	RandomPhotoMetricDistortions,
 	RandomResizedCropImageAugment,
 	ResizeShortEdgeImageAugment,
 )
@@ -54,6 +58,29 @@ class ImageNet1K(Dataset):
 		self.classification_crop_aspect_ratio_range = (3.0 / 4.0, 4.0 / 3.0)
 		self.classification_crop_max_attempts = 10
 		self.eval_crop_pct = 0.875
+
+		# Optional timm-like classification secondary augments.
+		# Keep all defaults disabled so existing training behavior is unchanged.
+		self.classification_use_color_jitter = False
+		self.classification_color_jitter_prob = 1.0
+		self.classification_color_jitter_random_order = True
+		self.classification_color_jitter_brightness_delta = 32.0
+		self.classification_color_jitter_contrast_range = (0.6, 1.4)
+		self.classification_color_jitter_saturation_range = (0.6, 1.4)
+		self.classification_color_jitter_hue_delta = 0.1
+
+		self.classification_grayscale_prob = 0.0
+		self.classification_gaussian_blur_prob = 0.0
+		self.classification_gaussian_blur_kernel_size = 23
+		self.classification_gaussian_blur_sigma_range = (0.1, 2.0)
+
+		self.classification_random_erasing_prob = 0.0
+		self.classification_random_erasing_use_fill_noise_color = False
+		self.classification_random_erasing_min_area_size = 0.02
+		self.classification_random_erasing_max_area_size = 0.25
+		self.classification_random_erasing_min_area_count = 1
+		self.classification_random_erasing_max_area_count = 1
+		self.classification_random_erasing_fill_constant_color = [0, 0, 0]
 
 		self._wnid_to_label = None
 		self._train_augmentations_pipeline = None
@@ -241,14 +268,54 @@ class ImageNet1K(Dataset):
 				aspect_ratio_range=self.classification_crop_aspect_ratio_range,
 				max_attempts=self.classification_crop_max_attempts,
 			))
-
-			if self.random_brightness:
-				augments.append(RandomBrightnessAugment(execute_prob=0.5))
-
 			augments.append(RandomFlipImageAugment(self.prob_of_flip))
+
+			if self.classification_use_color_jitter:
+				augments.append(RandomPhotoMetricDistortions(
+					include_brightness=True,
+					random_order=self.classification_color_jitter_random_order,
+					execute_prob=self.classification_color_jitter_prob,
+					brightness_max_delta=self.classification_color_jitter_brightness_delta,
+					contrast_lower=self.classification_color_jitter_contrast_range[0],
+					contrast_upper=self.classification_color_jitter_contrast_range[1],
+					saturation_lower=self.classification_color_jitter_saturation_range[0],
+					saturation_upper=self.classification_color_jitter_saturation_range[1],
+					hue_max_delta=self.classification_color_jitter_hue_delta,
+					brightness_prob=1.0,
+					contrast_prob=1.0,
+					saturation_prob=1.0,
+					hue_prob=1.0,
+				))
+			else:
+				# Keep the previous default path unchanged when color jitter is disabled.
+				if self.random_brightness:
+					augments.append(RandomBrightnessAugment(execute_prob=0.5))
+
+			if self.classification_grayscale_prob > 0 + 1e-3:
+				augments.append(RandomGrayscaleImageAugment(execute_prob=self.classification_grayscale_prob))
+
+			if self.classification_gaussian_blur_prob > 0 + 1e-3:
+				augments.append(RandomGaussianBlurImageAugment(
+					kernel_size=self.classification_gaussian_blur_kernel_size,
+					sigma_min=self.classification_gaussian_blur_sigma_range[0],
+					sigma_max=self.classification_gaussian_blur_sigma_range[1],
+					execute_prob=self.classification_gaussian_blur_prob,
+				))
 
 			if self.random_jepg_quality:
 				augments.append(RandomJEPGQualityAugment())
+
+			if self.classification_random_erasing_prob > 0 + 1e-3:
+				augments.append(RandomErasingAugment(
+					prob=self.classification_random_erasing_prob,
+					min_area_size=self.classification_random_erasing_min_area_size,
+					max_area_size=self.classification_random_erasing_max_area_size,
+					min_area_count=self.classification_random_erasing_min_area_count,
+					max_area_count=self.classification_random_erasing_max_area_count,
+					fill_constant_color=self.classification_random_erasing_fill_constant_color,
+					use_fill_noise_color=self.classification_random_erasing_use_fill_noise_color,
+					ignore_label=self.ignore_label,
+				))
 		else:
 			resize_short_edge = int(round(float(min(target_h, target_w)) / float(self.eval_crop_pct)))
 			augments.append(ResizeShortEdgeImageAugment(short_edge=resize_short_edge))
