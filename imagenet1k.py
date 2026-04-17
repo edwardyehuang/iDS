@@ -8,6 +8,7 @@ from scipy.io import loadmat
 from ids.dataset import Dataset
 from iseg.data_process.augments import (
 	CenterCropImageAugment,
+	RandAugmentImageAugment,
 	RandomErasingAugment,
 	RandomGaussianBlurImageAugment,
 	RandomGrayscaleImageAugment,
@@ -58,6 +59,25 @@ class ImageNet1K(Dataset):
 		self.classification_crop_aspect_ratio_range = (3.0 / 4.0, 4.0 / 3.0)
 		self.classification_crop_max_attempts = 10
 		self.eval_crop_pct = 0.875
+
+		self.classification_use_rand_augment = False
+		self.classification_rand_augment_num_layers = 2
+		self.classification_rand_augment_magnitude = 9.0
+		self.classification_rand_augment_magnitude_max = 10.0
+		self.classification_rand_augment_magnitude_std = 0.0
+		self.classification_rand_augment_op_prob = 1.0
+		self.classification_rand_augment_max_rotate_degree = 30.0
+		self.classification_rand_augment_max_shear_ratio = 0.3
+		self.classification_rand_augment_max_translate_ratio = 0.45
+		self.classification_rand_augment_max_enhance_delta = 0.9
+
+		self.classification_mixup_alpha = 0.0
+		self.classification_mixup_prob = 1.0
+		self.classification_cutmix_alpha = 0.0
+		self.classification_cutmix_prob = 1.0
+		self.classification_mix_switch_prob = 0.5
+		self.classification_label_smoothing = 0.0
+		self.classification_metric_top_k = 5
 
 		# Optional timm-like classification secondary augments.
 		# Keep all defaults disabled so existing training behavior is unchanged.
@@ -269,6 +289,19 @@ class ImageNet1K(Dataset):
 				max_attempts=self.classification_crop_max_attempts,
 			))
 			augments.append(RandomFlipImageAugment(self.prob_of_flip))
+
+			if self.classification_use_rand_augment:
+				augments.append(RandAugmentImageAugment(
+					num_layers=self.classification_rand_augment_num_layers,
+					magnitude=self.classification_rand_augment_magnitude,
+					magnitude_max=self.classification_rand_augment_magnitude_max,
+					magnitude_std=self.classification_rand_augment_magnitude_std,
+					op_execute_prob=self.classification_rand_augment_op_prob,
+					max_rotate_degree=self.classification_rand_augment_max_rotate_degree,
+					max_shear_ratio=self.classification_rand_augment_max_shear_ratio,
+					max_translate_ratio=self.classification_rand_augment_max_translate_ratio,
+					max_enhance_delta=self.classification_rand_augment_max_enhance_delta,
+				))
 
 			if self.classification_use_color_jitter:
 				augments.append(RandomPhotoMetricDistortions(
