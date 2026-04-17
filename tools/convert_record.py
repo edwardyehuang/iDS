@@ -21,7 +21,7 @@ flags.DEFINE_multi_string("convert_datasets", [ss.VOC2012], "name of the dataset
 
 flags.DEFINE_multi_string("tfrecord_outputs", None, "outputs of tfrecord")
 
-flags.DEFINE_bool("compress", False, "Compress tfrecord")
+flags.DEFINE_bool("compress", True, "Compress tfrecord")
 
 flags.DEFINE_float("size_split", 1e9, "max size of each tfrecord file")
 
